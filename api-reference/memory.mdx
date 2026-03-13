@@ -1,6 +1,6 @@
 ---
 title: "Memory API"
-description: "Search, manage, and persist memory chunks, sessions, and experiences"
+description: "profClaw Memory API - semantic search over memory files and chat history, manage memory chunks and experiences, and view per-session context storage."
 ---
 
 The memory system provides semantic search over markdown files, persistent session context, and an experience store for learning from past tool chains and user preferences.
@@ -177,3 +177,10 @@ GET /api/memory/watcher/status
   }
 }
 ```
+
+## Related
+
+- [Memory Tools](/tools/memory) - How agents search and recall memory during execution
+- [profclaw memory](/cli/memory) - Sync and inspect the memory index from the CLI
+- [Agent Sessions API](/api-reference/agent-sessions) - Warm memory before agentic execution
+- [Configuration Overview](/configuration/overview) - Memory settings and base paths

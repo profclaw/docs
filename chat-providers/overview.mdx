@@ -1,6 +1,6 @@
 ---
 title: "Chat Providers Overview"
-description: "profClaw connects to 27 chat channels. Deploy your AI agent across Slack, Discord, Telegram, WhatsApp, Teams, and more from a single install."
+description: "Connect your AI agent to 27 chat channels. Covers Slack, Discord, Telegram, WhatsApp, Teams, Matrix, and more - with multi-account support and webhook setup."
 ---
 
 profClaw's chat provider system provides a unified abstraction across all messaging platforms. One agent, every channel.
@@ -37,10 +37,14 @@ profClaw's chat provider system provides a unified abstraction across all messag
 | Nextcloud Talk | Self-hosted | Beta | Nextcloud messaging |
 | Synology Chat | Self-hosted | Beta | Synology NAS chat |
 
+<Note>
+  WebChat is enabled by default with no credentials required. It is always available at `http://localhost:3000`. All other providers require credential setup.
+</Note>
+
 ## Capabilities Comparison
 
 | Feature | WebChat | Slack | Discord | Telegram | WhatsApp | Teams |
-|---------|---------|-------|---------|----------|---------|-------|
+|---------|---------|-------|---------|----------|----------|-------|
 | Direct Messages | Yes | Yes | Yes | Yes | Yes | Yes |
 | Group/Channel | No | Yes | Yes | Yes | No | Yes |
 | Slash Commands | No | Yes | Yes | No | No | Yes |
@@ -54,7 +58,7 @@ profClaw's chat provider system provides a unified abstraction across all messag
 
 ## Multi-Account Support
 
-profClaw supports multiple accounts per provider:
+profClaw supports multiple accounts per provider. Each account is independently configured and can be assigned to different channels or teams:
 
 ```yaml
 # settings.yml
@@ -70,12 +74,12 @@ chat:
 
 ## Architecture
 
-All providers implement the same interface:
+All providers implement the same interface, allowing the execution engine and security layer to treat all channels uniformly:
 
-- **Inbound**: Receive messages via webhooks or polling
-- **Outbound**: Send messages and responses
+- **Inbound**: Receive messages via webhooks or long-polling
+- **Outbound**: Send messages and structured responses
 - **Status**: Health checks and connection monitoring
-- **Auth**: OAuth flows or manual token setup
+- **Auth**: OAuth flows or manual token configuration
 
 ```
 User Message
@@ -84,35 +88,78 @@ User Message
 [Chat Provider]  ----incoming----> [Message Handler]
                                          |
                                     [AI Executor]
+                                    [Tool Pipeline]
                                          |
 [Chat Provider]  <---outbound-----  [Response]
 ```
 
 ## Webhook Setup
 
-Most providers require a public webhook URL. Use `profclaw serve` to start the server, then expose it:
+Most providers require a public HTTPS webhook URL to deliver events. Use `profclaw serve` to start the server, then expose it with a tunnel during development or configure your domain for production.
 
-```bash
-# Development: use ngrok
-ngrok http 3000
-# Then use https://your-ngrok-id.ngrok.io as your webhook base URL
+<Tabs>
+  <Tab title="Development (tunnel)">
+    Use a tunnel tool to expose your local server:
 
-# Production: configure your domain
-WEBHOOK_BASE_URL=https://profclaw.yourdomain.com
-```
+    ```bash
+    # Using cloudflared (recommended, free, no account needed for quick tunnels)
+    brew install cloudflared
+    cloudflared tunnel --url http://localhost:3000
+
+    # Or using ngrok
+    ngrok http 3000
+    ```
+
+    Use the generated HTTPS URL as your webhook base URL in the provider's developer portal.
+  </Tab>
+  <Tab title="Production">
+    Set your domain as the webhook base URL:
+
+    ```bash
+    WEBHOOK_BASE_URL=https://profclaw.yourdomain.com
+    ```
+
+    profClaw appends provider-specific paths automatically. For example, the Slack webhook becomes:
+    `https://profclaw.yourdomain.com/api/webhooks/slack`
+  </Tab>
+</Tabs>
+
+<Warning>
+  All webhook endpoints validate request signatures from the provider. Never disable signature verification in production.
+</Warning>
 
 ## Configuration Pattern
 
-All providers follow the same environment variable pattern:
+All providers follow the same environment variable pattern - enable a provider by setting its credentials:
 
 ```bash
-# Enable a provider by setting its credentials
+# Slack
 SLACK_BOT_TOKEN=xoxb-...
+SLACK_APP_TOKEN=xapp-...
 SLACK_SIGNING_SECRET=...
 
+# Discord
 DISCORD_BOT_TOKEN=...
 
+# Telegram
 TELEGRAM_BOT_TOKEN=...
+```
+
+Providers with no credentials set are simply not loaded. There is no need to explicitly disable them.
+
+## Security Considerations
+
+Chat providers inherit the global [security mode](/security/overview). Restrict which channels or users the agent responds to:
+
+```yaml
+chat:
+  channels:
+    slack:
+      allowedChannels:
+        - C0123456789  # #engineering
+        - C9876543210  # #devops
+      allowedUsers:
+        - U012345678   # Specific user IDs only
 ```
 
 ## Health Check
@@ -121,4 +168,28 @@ TELEGRAM_BOT_TOKEN=...
 profclaw doctor --chat
 ```
 
-This shows connection status for all configured chat providers.
+Shows connection status for all configured chat providers, including last event received and any authentication errors.
+
+## Popular Guides
+
+<CardGroup cols={2}>
+  <Card title="Slack Bot Setup" icon="slack" href="/guides/slack-bot">
+    Step-by-step guide to creating a Slack app and connecting profClaw.
+  </Card>
+  <Card title="WhatsApp Bot" icon="whatsapp" href="/guides/whatsapp-bot">
+    Connect profClaw to WhatsApp Business API.
+  </Card>
+  <Card title="Self-Hosted Deployment" icon="server" href="/guides/self-hosted">
+    Configure public webhooks for production deployments.
+  </Card>
+  <Card title="Custom Provider" icon="wrench" href="/chat-providers/custom">
+    Implement your own chat provider using the provider SDK.
+  </Card>
+</CardGroup>
+
+## Related
+
+- [profclaw channels](/cli/channels) - Enable, disable, and test chat providers from the CLI
+- [Security Overview](/security/overview) - Restrict which channels and users the agent responds to
+- [profclaw tunnel](/cli/tunnel) - Expose your local server for webhook delivery
+- [Configuration Overview](/configuration/overview) - settings.yml reference for channel configuration

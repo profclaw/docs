@@ -1,6 +1,6 @@
 ---
 title: "Gateway API"
-description: "Unified gateway for routing requests to AI agents and workflow execution"
+description: "profClaw Gateway API - unified entry point for dispatching work to AI agents. Route tasks to agent adapters and trigger workflows with Bearer token auth."
 ---
 
 The gateway is profClaw's unified entry point for dispatching work to AI agents. It accepts structured requests and routes them to the appropriate agent adapter, workflow, or task queue.
@@ -154,3 +154,10 @@ interface GatewayContext {
   receivedAt: Date;
 }
 ```
+
+## Related
+
+- [Tasks API](/api-reference/tasks) - Direct task creation without workflow routing
+- [Agents API](/api-reference/agents) - View available agent adapters
+- [Chat Streaming](/api-reference/chat-stream) - SSE streaming for interactive execution
+- [Webhooks API](/api-reference/webhooks) - Configure callback URLs for task completion

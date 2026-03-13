@@ -11,6 +11,18 @@ profClaw runs in three deployment modes that control resource usage, available f
 export PROFCLAW_MODE=mini  # pico | mini | pro
 ```
 
+```mermaid
+flowchart TD
+  Env{"PROFCLAW_MODE"}
+  Pico["pico\n512MB RAM / 1 core\n3 providers / 2 channels\nin-memory queue"]
+  Mini["mini (default)\n2GB RAM / 2 cores\n15 providers / 10 channels\nin-memory queue"]
+  Pro["pro\n8GB+ RAM / 4+ cores\n37 providers / 27 channels\nBullMQ + Redis\nclustering + sync"]
+
+  Env -- "pico" --> Pico
+  Env -- "mini" --> Mini
+  Env -- "pro" --> Pro
+```
+
 ## Mode Comparison
 
 | Feature | Pico | Mini | Pro |
@@ -107,6 +119,22 @@ During `profclaw onboard`, the wizard detects your environment and recommends a 
 | VPS (2-4GB RAM) | Mini |
 | VPS (8GB+ RAM) | Pro |
 | Kubernetes cluster | Pro |
+
+```mermaid
+flowchart TD
+  Onboard["profclaw onboard\nenvironment detection"]
+  ARM{"ARM SBC /\nRaspberry Pi?"}
+  RAM{"RAM available?"}
+  Redis{"Redis\navailable?"}
+
+  Onboard --> ARM
+  ARM -- "yes" --> Pico["Recommend: pico"]
+  ARM -- "no" --> RAM
+  RAM -- "< 4GB" --> Mini["Recommend: mini"]
+  RAM -- ">= 8GB" --> Redis
+  Redis -- "yes" --> Pro["Recommend: pro"]
+  Redis -- "no" --> Mini
+```
 
 <Card title="Next: Configuration" icon="arrow-right" href="/configuration/overview" horizontal>
   Deep dive into environment variables and settings.

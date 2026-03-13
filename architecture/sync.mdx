@@ -5,6 +5,22 @@ description: "Bidirectional sync engine, conflict resolution, and multi-platform
 
 The sync engine (`src/sync/`) provides bidirectional synchronization between profClaw's internal ticket store and external platforms: GitHub Issues, Jira, and Linear.
 
+```mermaid
+graph LR
+  ProfClaw["profClaw\nTicket Store\n(LibSQL)"]
+  Engine["Sync Engine\nconflict resolution\nqueue + retry"]
+  GH["GitHub\nSyncAdapter"]
+  Jira["Jira\nSyncAdapter"]
+  Linear["Linear\nSyncAdapter"]
+  P2P["profClaw (remote)\nSyncAdapter"]
+
+  ProfClaw <--> Engine
+  Engine <--> GH
+  Engine <--> Jira
+  Engine <--> Linear
+  Engine <--> P2P
+```
+
 ## Core Types
 
 ```typescript
@@ -95,6 +111,27 @@ export interface SyncConflict {
 }
 ```
 
+```mermaid
+flowchart TD
+  Conflict["Ticket modified\nlocally AND remotely"]
+  Strategy{"ConflictStrategy"}
+  LW["local_wins\nprofClaw value wins"]
+  RW["remote_wins\nremote value wins"]
+  Latest{"latest updatedAt?"}
+  Manual["manual\nstore SyncConflict\nfor user resolution"]
+  Apply["apply winning value\nto both sides"]
+
+  Conflict --> Strategy
+  Strategy -- "local_wins" --> LW
+  Strategy -- "remote_wins" --> RW
+  Strategy -- "latest_wins" --> Latest
+  Strategy -- "manual" --> Manual
+  Latest -- "local newer" --> LW
+  Latest -- "remote newer" --> RW
+  LW --> Apply
+  RW --> Apply
+```
+
 ## Sync Queue
 
 Operations are queued and processed with retry:
@@ -111,6 +148,23 @@ export interface SyncQueueItem {
   status: 'pending' | 'processing' | 'completed' | 'failed';
   result?: SyncResult;
 }
+```
+
+```mermaid
+sequenceDiagram
+  participant Ext as External Platform\n(GitHub / Jira / Linear)
+  participant WH as Webhook Route\n/api/webhooks/:platform
+  participant Adapter as SyncAdapter\nparseWebhook()
+  participant Engine as Sync Engine
+  participant DB as LibSQL
+
+  Ext->>WH: webhook POST
+  WH->>Adapter: parseWebhook(payload)
+  Adapter-->>Engine: WebhookEvent
+  Engine->>DB: update local ticket
+  Engine-->>WH: 200 OK
+
+  note over Engine,DB: immediate sync (no poll delay)
 ```
 
 ## Webhook-Driven Sync

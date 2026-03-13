@@ -1,6 +1,6 @@
 ---
 title: "Health API"
-description: "System health checks, readiness probes, and component diagnostics"
+description: "profClaw Health API - liveness probe, readiness probe, and detailed per-component diagnostics for providers, queue, and storage. Docker and Kubernetes ready."
 ---
 
 profClaw exposes two health endpoints: a simple liveness probe and a detailed diagnostic endpoint with per-component status.
@@ -132,3 +132,10 @@ GET /api/health/metrics
 ```
 
 Returns a `MetricsSummary` with request rates, error rates, and p95 latencies per endpoint. Used by the health detailed endpoint and available for external monitoring tools.
+
+## Related
+
+- [Task Queue API](/api-reference/task-queue) - Inspect queue depth that affects health status
+- [Agents API](/api-reference/agents) - Per-adapter health checks included in detailed health
+- [profclaw doctor](/cli/doctor) - Run system diagnostics from the CLI
+- [Monitoring Guide](/guides/monitoring) - Set up health check dashboards and alerts

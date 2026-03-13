@@ -5,6 +5,19 @@ description: "BullMQ and in-memory queue, job lifecycle, failure handling, and D
 
 profClaw uses a dual-mode queue: **BullMQ** (Redis-backed) in `pro` mode and an **in-memory queue** in `pico`/`mini` mode. Both implement the same `addTask / getTask / cancelTask / retryTask` interface.
 
+```mermaid
+flowchart TD
+  Env{"REDIS_URL set?"}
+  BullMQ["BullMQ Queue\nRedis-backed\n(pro mode)"]
+  MemQ["In-Memory Queue\nMap backed\n(pico / mini)"]
+  API["Unified Queue API\naddTask / getTask\ncancelTask / retryTask"]
+
+  Env -- "yes" --> BullMQ
+  Env -- "no" --> MemQ
+  BullMQ --> API
+  MemQ --> API
+```
+
 ## Task Lifecycle
 
 ```
@@ -28,6 +41,31 @@ addTask()
                                                   Yes                No
                                                    |                  |
                                               Re-queue           Dead Letter Queue
+```
+
+```mermaid
+flowchart TD
+  Add["addTask()"]
+  Pending["pending"]
+  Queued["queued"]
+  InProgress["in_progress"]
+  Success["completed"]
+  Failed["failed"]
+  Retry{"retryCount\n< maxRetries?"}
+  Backoff["re-queue with\nexponential backoff"]
+  DLQ["Dead Letter Queue"]
+  Notify["Notification Queue\nasync delivery"]
+
+  Add --> Pending
+  Pending --> Queued
+  Queued -- "worker picks up" --> InProgress
+  InProgress -- "adapter.execute() ok" --> Success
+  InProgress -- "throws / rejects" --> Failed
+  Success --> Notify
+  Failed --> Retry
+  Retry -- "yes" --> Backoff
+  Backoff --> Queued
+  Retry -- "no" --> DLQ
 ```
 
 ## BullMQ Configuration
@@ -120,6 +158,20 @@ await notificationQueue.add('notify', { task, result }, { attempts: 3 });
 // 1. GitHub/Jira/Linear (result comment on source issue)
 // 2. Registered outbound webhooks
 // 3. In-app notification store
+```
+
+```mermaid
+flowchart LR
+  TaskDone["Task Completed"]
+  NQ["ai-task-notifications\nqueue"]
+  GH["GitHub / Jira / Linear\nresult comment"]
+  WH["Outbound Webhooks"]
+  InApp["In-App Notification\nstore"]
+
+  TaskDone --> NQ
+  NQ --> GH
+  NQ --> WH
+  NQ --> InApp
 ```
 
 ## Webhook Queue

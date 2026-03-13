@@ -1,6 +1,6 @@
 ---
 title: "Integrations API"
-description: "Configure GitHub, Jira, Linear, and web search integrations via the REST API"
+description: "profClaw Integrations API - configure GitHub, Jira, Linear, and web search connections. Store credentials, check connectivity, and manage integration status."
 ---
 
 The integrations API manages external service configuration - storing credentials, checking connectivity, and providing status information to the UI.
@@ -165,3 +165,10 @@ GET /api/integrations/webhooks/status
   "linear": { "configured": true, "lastEvent": "2026-03-12T09:00:00Z", "eventCount": 15 }
 }
 ```
+
+## Related
+
+- [Webhooks API](/api-reference/webhooks) - Inbound and outbound webhook management
+- [GitHub Integration](/integrations/github) - Set up the GitHub integration
+- [Jira Integration](/integrations/jira) - Connect Jira projects and configure automation
+- [Linear Integration](/integrations/linear) - Connect Linear workspaces and sync issues

@@ -5,6 +5,30 @@ description: "File-based memory, semantic search, context management, and experi
 
 profClaw's memory system has two layers: **file memory** (markdown files indexed for semantic search) and the **experience store** (learned tool chains and user preferences).
 
+```mermaid
+graph TD
+  Files["Markdown Files on Disk\n*.md / *.mdx / *.txt"]
+  Watcher["Memory Watcher\nchokidar auto-sync"]
+  Chunks["memory_chunks table\nLibSQL"]
+  Search["searchMemory(query)\nBM25 / vector similarity"]
+  TopK["Top-K Chunks\ninjected into context"]
+
+  Experiences["Experience Store\ntool_chain / user_preference\ntask_solution / error_recovery"]
+  ExpSearch["findSimilarExperiences()\nBM25 on intent field"]
+  Decay["applyDecay()\nweight by recency"]
+  Prompt["System Prompt\ncontext injection"]
+
+  Files --> Watcher
+  Watcher --> Chunks
+  Chunks --> Search
+  Search --> TopK
+  TopK --> Prompt
+
+  Experiences --> Decay
+  Experiences --> ExpSearch
+  ExpSearch --> Prompt
+```
+
 ## File Memory
 
 The file memory layer (`src/memory/`) indexes markdown files into chunks stored in LibSQL. At query time, it uses BM25 full-text search (or vector search when available) to find relevant context.
@@ -116,6 +140,23 @@ Each experience has:
 ### Retrieval
 
 `findSimilarExperiences(query, tags?, limit?)` uses BM25 search on the `intent` field to find past experiences relevant to the current task. The result is injected into the system prompt when available.
+
+```mermaid
+flowchart LR
+  Exec["Agent Execution\nsolves a task"]
+  Record["Record Experience\nintent + solution\nsuccessScore"]
+  Retrieve["findSimilarExperiences()\non next similar task"]
+  Use["inject into\nsystem prompt"]
+  Decay["applyDecay()\nweight * 0.5^days/halfLife"]
+  Prune["pruneExpired()\nremove below minWeight"]
+
+  Exec --> Record
+  Record --> Retrieve
+  Retrieve --> Use
+  Use -- "increments useCount" --> Record
+  Record --> Decay
+  Decay --> Prune
+```
 
 ### Decay
 

@@ -1,6 +1,6 @@
 ---
 title: "Webhooks API"
-description: "Register outbound webhook endpoints and inspect inbound webhook delivery"
+description: "profClaw Webhooks API - register outbound endpoints, inspect inbound delivery from GitHub and Jira, view delivery history, and test webhook signatures."
 ---
 
 profClaw handles webhooks in two directions: **inbound** (from GitHub, Jira, Linear to create tasks) and **outbound** (from profClaw to notify your systems when tasks complete).
@@ -141,3 +141,10 @@ POST /api/webhooks/:id/deliveries/:deliveryId/redeliver
 ```
 
 Manually trigger redelivery of a specific event.
+
+## Related
+
+- [profclaw webhooks](/cli/webhooks) - Manage webhook endpoints from the CLI
+- [Tasks API](/api-reference/tasks) - Tasks trigger outbound webhook events
+- [Integrations Overview](/integrations/overview) - Configure inbound GitHub, Jira, and Linear webhooks
+- [Security API](/api-reference/security-api) - Audit log of inbound webhook processing

@@ -1,6 +1,6 @@
 ---
 title: "Security API"
-description: "Security policy management, audit logs, and tool permission controls"
+description: "profClaw Security API - manage security modes, set tool permission policies, retrieve the audit log, and approve pending tool execution requests."
 ---
 
 The security API manages profClaw's permission system - controlling which tools agents can use, setting security modes, and retrieving the audit trail of all agent actions.
@@ -155,3 +155,10 @@ Built-in guards:
 | `shell-injection` | Shell metacharacters in command arguments |
 | `secret-exfiltration` | Reads of `.env`, credential files |
 | `rate-limit` | Tool calls exceeding configured rate |
+
+## Related
+
+- [Security Overview](/security/overview) - Security modes, guards, and audit architecture
+- [profclaw security](/cli/security) - Manage security policies from the CLI
+- [profclaw audit](/cli/audit) - View the audit log from the CLI
+- [Tools Overview](/tools/overview) - Tool security levels and execution pipeline

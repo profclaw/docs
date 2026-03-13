@@ -1,6 +1,6 @@
 ---
 title: "Agents API"
-description: "List and inspect AI agent adapters registered with profClaw"
+description: "profClaw Agents API - list and inspect registered AI agent adapters, check health status, capabilities, and runtime statistics per adapter type."
 ---
 
 The agents API surfaces the registered AI agent adapters and their runtime status. Agents are the execution backends that process tasks - each adapter type (Claude Code, custom, etc.) exposes capabilities, health, and stats.
@@ -123,3 +123,10 @@ registry.register({
   },
 });
 ```
+
+## Related
+
+- [Agent Sessions API](/api-reference/agent-sessions) - Start and monitor execution sessions
+- [Tasks API](/api-reference/tasks) - Create tasks that agents process
+- [Health API](/api-reference/health) - System-wide health including agent status
+- [profclaw agent](/cli/agent) - Inspect agents from the CLI

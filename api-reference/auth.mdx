@@ -1,6 +1,6 @@
 ---
 title: "Authentication API"
-description: "Sign up, log in, OAuth flows, session management, and access keys"
+description: "profClaw Authentication API - sign up, log in, OAuth flows for GitHub and Jira, session management, access keys, and user profile endpoints."
 ---
 
 ## POST /api/auth/signup
@@ -173,3 +173,10 @@ curl -X PUT http://localhost:3000/api/auth/access-key \
 ```
 
 Pass `"key": null` to remove the access key requirement.
+
+## Related
+
+- [API Overview](/api-reference/overview) - Base URL, authentication modes, and error format
+- [Devices API](/api-reference/devices) - Passwordless device pairing flow
+- [Security Overview](/security/overview) - Auth modes and permission system
+- [profclaw auth](/cli/auth) - Manage users and invite codes from the CLI

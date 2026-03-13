@@ -1,6 +1,6 @@
 ---
 title: "Tasks API"
-description: "Create, list, filter, cancel, and retry AI tasks"
+description: "profClaw Tasks API - create, list, filter by status, cancel, and retry agentic tasks. Track task lifecycle from pending through completion or failure."
 ---
 
 Tasks are the core work unit in profClaw. They are created from webhooks, the API, or the UI, queued for agent execution, and tracked through their lifecycle.
@@ -163,3 +163,10 @@ POST /api/tasks/import
 Content-Type: application/json
 { "version": "1.0", "tasks": [...] }
 ```
+
+## Related
+
+- [Task Queue API](/api-reference/task-queue) - Inspect queue depth and manage dead-letter entries
+- [Agent Sessions API](/api-reference/agent-sessions) - Monitor task execution sessions
+- [profclaw task](/cli/task) - Create and manage tasks from the CLI
+- [Webhooks API](/api-reference/webhooks) - Receive tasks from GitHub, Jira, and Linear

@@ -1,6 +1,6 @@
 ---
 title: "API Overview"
-description: "Base URL, authentication, rate limits, and error format for the profClaw REST API"
+description: "profClaw REST API reference. Base URL, authentication modes (session cookie, access key, Bearer token), rate limits, error format, and pagination."
 ---
 
 The profClaw API is a JSON REST API built with [Hono](https://hono.dev/). All endpoints are served on the same port as the UI (default `3000`).
@@ -107,3 +107,10 @@ All request and response bodies use `application/json`. Streaming endpoints use 
 ## Versioning
 
 The API is currently unversioned. Breaking changes will be announced in the changelog and migration guides provided.
+
+## Related
+
+- [Authentication API](/api-reference/auth) - Sign up, log in, and manage sessions
+- [Chat API](/api-reference/chat) - Send messages and trigger agentic execution
+- [Tasks API](/api-reference/tasks) - Create and track agentic task lifecycle
+- [profclaw serve](/cli/serve) - Start the HTTP server that exposes this API

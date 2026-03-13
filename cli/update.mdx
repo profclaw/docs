@@ -11,7 +11,7 @@ profclaw update [version] [flags]
 
 ## Description
 
-`update` checks for a newer version of profClaw and applies the update. It respects the original installation method (npm, Homebrew, or binary) and runs the appropriate update command. After updating, it validates the new version with a health check.
+`update` checks for a newer version of profClaw and applies the update. It respects the original installation method (npm or binary) and runs the appropriate update command. After updating, it validates the new version with a health check.
 
 ## Arguments
 
@@ -70,10 +70,6 @@ profclaw update --yes --restart
 <CodeGroup>
 ```bash npm global install
 npm install -g profclaw@latest
-```
-
-```bash Homebrew
-brew upgrade profclaw
 ```
 
 ```bash pnpm global install

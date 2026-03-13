@@ -1,6 +1,6 @@
 ---
 title: "Devices API"
-description: "Device identity, pairing codes, QR pairing, and multi-device trust management"
+description: "profClaw Devices API - Ed25519 device identity, pairing codes, QR-based pairing flow, and multi-device trust management for passwordless access."
 ---
 
 The devices API manages the Ed25519-based device identity system and the pairing code flow for authorizing new devices without a username/password.
@@ -164,3 +164,10 @@ POST /api/devices/pairing/cleanup
 ```
 
 Remove expired pairing requests. Run periodically or call after your own cleanup schedule.
+
+## Related
+
+- [Authentication API](/api-reference/auth) - Session and OAuth-based authentication
+- [Security Device Pairing](/security/device-pairing) - How device pairing works and security model
+- [profclaw device](/cli/device) - Manage paired devices from the CLI
+- [Security Overview](/security/overview) - Auth modes and trust management

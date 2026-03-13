@@ -5,6 +5,37 @@ description: "System components, data flow, and deployment topology of profClaw"
 
 profClaw is a monorepo with a Hono-based API backend and a React 19 frontend. It runs as a single Node.js process (or serverless on Cloudflare Workers) and stores data in LibSQL/SQLite.
 
+```mermaid
+graph TD
+  Client["Client (WebChat / CLI / MCP)"]
+  Hono["Hono Router\n/api/*"]
+  Auth["Auth Middleware\nsession / Bearer"]
+  Chat["Chat Engine\nchat/providers/"]
+  Exec["Execution Engine\nchat/execution/"]
+  Queue["Task Queue\nBullMQ / in-memory"]
+  Memory["Memory System\nmemory/"]
+  Plugins["Plugin System\nplugins/"]
+  Integrations["Integrations\nGitHub / Jira / Linear"]
+  MCP["MCP Server\nmcp/"]
+  LibSQL["LibSQL / SQLite"]
+  Redis["Redis\n(pro mode)"]
+
+  Client --> Hono
+  Hono --> Auth
+  Auth --> Chat
+  Auth --> Queue
+  Chat --> Exec
+  Exec --> Memory
+  Exec --> Plugins
+  Queue --> Exec
+  Hono --> Integrations
+  Hono --> MCP
+  Exec --> LibSQL
+  Queue --> LibSQL
+  Memory --> LibSQL
+  Queue --> Redis
+```
+
 ## Component Map
 
 ```
@@ -63,6 +94,31 @@ type DeploymentMode = 'pico' | 'mini' | 'pro';
 6. Queue worker picks up task, routes to agent adapter via `AgentRegistry`
 7. Agent executes tools via `ChatToolHandler` (respecting security mode)
 8. Result stored in LibSQL, notifications dispatched asynchronously
+
+```mermaid
+sequenceDiagram
+  participant C as Client
+  participant H as Hono Router
+  participant A as Auth Middleware
+  participant R as Route Handler
+  participant Q as Task Queue
+  participant E as Execution Engine
+  participant DB as LibSQL
+
+  C->>H: HTTP request
+  H->>A: validate session / token
+  A-->>H: authorized
+  H->>R: Zod-validated input
+  alt chat request
+    R->>E: ensureChatRuntime()
+    E-->>C: SSE stream (AgenticEvents)
+  else task request
+    R->>Q: addTask()
+    Q->>E: worker picks up job
+    E->>DB: store result
+    E-->>C: async notification
+  end
+```
 
 ## Storage Layer
 

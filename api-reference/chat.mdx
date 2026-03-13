@@ -1,6 +1,6 @@
 ---
 title: "Chat API"
-description: "Send messages, manage conversations, list providers and models"
+description: "profClaw Chat API - send messages, manage multi-turn conversations, list providers and models, and trigger agentic execution with tool support."
 ---
 
 The chat API provides endpoints for single-turn completions, multi-turn conversations, tool-enabled chat, and agentic (autonomous) execution.
@@ -162,3 +162,10 @@ POST /api/chat/tools/approve
 ```
 
 Decisions: `allow-once` | `allow-always` | `deny`
+
+## Related
+
+- [Chat Streaming](/api-reference/chat-stream) - SSE event format for agentic execution
+- [Agent Sessions API](/api-reference/agent-sessions) - Monitor and cancel execution sessions
+- [Tools Overview](/tools/overview) - Tools the agent can call during execution
+- [AI Providers Overview](/ai-providers/overview) - Configure providers and models

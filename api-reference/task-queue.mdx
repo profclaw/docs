@@ -1,6 +1,6 @@
 ---
 title: "Task Queue API"
-description: "Inspect queue status, manage the dead letter queue, and configure retry behavior"
+description: "profClaw Task Queue API - inspect queue depth, drain queues, manage dead-letter entries, and configure retry behavior for BullMQ and in-memory backends."
 ---
 
 profClaw ships with two queue backends: **BullMQ** (Redis-backed, for `pro` mode) and an **in-memory queue** (for `pico`/`mini` mode). Both expose the same HTTP API.
@@ -148,3 +148,10 @@ The `FailureHandler` (`src/queue/failure-handler.ts`) intercepts task failures a
 ## Webhook Queue
 
 The webhook queue (`src/queue/webhook-queue.ts`) handles outbound webhook delivery with automatic retry on failure. Configure delivery endpoints via `POST /api/webhooks`.
+
+## Related
+
+- [Tasks API](/api-reference/tasks) - Create and manage tasks in the queue
+- [profclaw queue](/cli/queue) - Inspect queue status from the CLI
+- [Deployment Modes](/getting-started/deployment-modes) - When to use BullMQ vs in-memory
+- [Configuration Overview](/configuration/overview) - Queue settings in settings.yml

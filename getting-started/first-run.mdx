@@ -1,47 +1,55 @@
 ---
 title: "First Run"
-description: "Start profClaw and interact with your first AI agent"
+description: "Start profClaw, access the web UI, and send your first message. Covers the web interface, CLI chat, TUI, tools, skills, and API access."
 ---
 
 ## Start the Server
 
 <Tabs>
-  <Tab title="Development">
+  <Tab title="Standard">
     ```bash
     profclaw serve
     ```
-    Starts the HTTP server with hot reload on `http://localhost:3000`.
+
+    Starts the HTTP server at `http://localhost:3000`. Output includes connected providers and chat channels.
   </Tab>
   <Tab title="Daemon">
     ```bash
     profclaw daemon start
     ```
-    Runs profClaw as a background service.
+
+    Runs profClaw as a background service that persists after you close the terminal. Check status with `profclaw daemon status`.
   </Tab>
   <Tab title="Docker">
     ```bash
     docker start profclaw
     ```
+
+    Or if using Docker Compose: `docker compose up -d`
   </Tab>
 </Tabs>
 
 ## Access the Web UI
 
-Open `http://localhost:3000` in your browser. You will see the profClaw web chat interface.
+Open `http://localhost:3000` in your browser. You will see the profClaw web chat interface (WebChat provider).
+
+<Tip>
+  If the port is already in use, set a different one with `PORT=3001 profclaw serve` or via the `PORT` environment variable in your configuration.
+</Tip>
 
 ## Send Your First Message
 
 Type a message in the chat input:
 
 ```
-You: What can you help me with?
+What can you help me with?
 ```
 
-profClaw will respond with its capabilities based on your configured tools and providers.
+profClaw responds with its capabilities based on your configured tools and providers. The response varies by [deployment mode](/getting-started/deployment-modes) - pro mode has access to all 77+ tools, while pico mode provides a focused essential set.
 
 ## Try the CLI Chat
 
-You can also interact directly from your terminal:
+Interact directly from your terminal without opening a browser:
 
 ```bash
 profclaw chat
@@ -52,7 +60,7 @@ This opens an interactive terminal session:
 ```
 profClaw v2.x.x - Interactive Chat
 Type /help for commands, /exit to quit
-──────────────────────────────────────
+--------------------------------------
 
 You: Summarize the README.md in this directory
 
@@ -64,6 +72,12 @@ Here's a summary of the README:
 ...
 ```
 
+Pass a one-shot message without entering the interactive session:
+
+```bash
+profclaw chat "What is the current directory?"
+```
+
 ## Try the TUI
 
 For a richer terminal experience with panels and syntax highlighting:
@@ -72,30 +86,38 @@ For a richer terminal experience with panels and syntax highlighting:
 profclaw tui
 ```
 
+The TUI provides a split-pane view with the conversation on one side and tool execution output on the other.
+
 ## Use Tools
 
-profClaw agents have access to tools. Try asking it to:
+profClaw agents have access to tools. Try asking:
 
 ```
-You: List the files in the current directory
-You: Search for TODO comments in my codebase
-You: Create a new file called hello.txt with "Hello World"
-You: Run my test suite
+List the files in the current directory
+Search for TODO comments in my codebase
+Create a new file called hello.txt with "Hello World"
+Run my test suite
+Fetch the content of https://example.com
 ```
 
-Tools are subject to your [security policy](/security/modes). In standard mode, destructive operations require approval.
+<Note>
+  Tools are subject to your [security policy](/security/overview). In `standard` mode, destructive operations like shell execution require explicit approval before they run. Use `profclaw config set security.mode permissive` for unrestricted local development only.
+</Note>
+
+See [Tools Overview](/tools/overview) for the full list of available tools and how model-aware tier routing works.
 
 ## Use Skills
 
-Skills are pre-built capabilities invoked with slash commands:
+Skills are pre-built expertise modules invoked with slash commands:
 
 ```
-You: /commit
-You: /review-pr 42
-You: /summarize src/
+/commit
+/review-pr 42
+/summarize src/
+/web-research "Hono middleware patterns"
 ```
 
-See [all 50 built-in skills](/skills/built-in).
+See [Skills Overview](/skills/overview) for all 50 built-in skills and how to create your own.
 
 ## API Access
 
@@ -107,6 +129,21 @@ curl -X POST http://localhost:3000/api/chat/message \
   -d '{"message": "Hello profClaw", "provider": "anthropic"}'
 ```
 
-<Card title="Next: Deployment Modes" icon="arrow-right" href="/getting-started/deployment-modes" horizontal>
-  Understand pico, mini, and pro modes in detail.
-</Card>
+The API returns a streaming JSON response with tool calls and the final message. See the [API Reference](/api-reference/overview) for full documentation.
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Deployment Modes" icon="server" href="/getting-started/deployment-modes">
+    Understand pico, mini, and pro modes and what each enables.
+  </Card>
+  <Card title="Tools Overview" icon="wrench" href="/tools/overview">
+    Explore the 77+ built-in tools and how execution works.
+  </Card>
+  <Card title="AI Providers" icon="brain" href="/ai-providers/overview">
+    Configure additional AI providers and model aliases.
+  </Card>
+  <Card title="Chat Providers" icon="messages" href="/chat-providers/overview">
+    Connect Slack, Discord, Telegram, or other chat channels.
+  </Card>
+</CardGroup>
