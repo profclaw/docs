@@ -406,7 +406,8 @@
     "default": "dark"
   },
   "seo": {
-    "indexHiddenPages": false
+    "indexHiddenPages": false,
+    "indexing": "all"
   },
   "feedback": {
     "thumbsRating": true,
