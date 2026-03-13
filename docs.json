@@ -334,8 +334,8 @@
         },
         {
           "anchor": "Community",
-          "href": "https://discord.gg/profclaw",
-          "icon": "discord"
+          "href": "https://github.com/profclaw/profclaw/discussions",
+          "icon": "comments"
         }
       ]
     }
@@ -349,7 +349,7 @@
     "links": [
       {
         "label": "Community",
-        "href": "https://discord.gg/profclaw"
+        "href": "https://github.com/profclaw/profclaw/discussions"
       }
     ],
     "primary": {
@@ -371,7 +371,6 @@
   "footer": {
     "socials": {
       "github": "https://github.com/profclaw",
-      "discord": "https://discord.gg/profclaw",
       "x": "https://x.com/profclaw"
     }
   },
