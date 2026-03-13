@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "quill",
+  "theme": "maple",
   "name": "profClaw Docs",
   "colors": {
     "primary": "#f43f5e",
@@ -393,10 +393,6 @@
       "weight": 400
     }
   },
-  "appearance": {
-    "default": "dark"
-  },
-  "rounded": "default",
   "seo": {
     "indexHiddenPages": false
   },
