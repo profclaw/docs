@@ -1,0 +1,104 @@
+---
+title: "Security Overview"
+description: "Defense-in-depth architecture: prompt guards, filesystem guards, SSRF protection, sandboxing, audit logging, and device pairing."
+---
+
+## Security Architecture
+
+profClaw is designed with a defense-in-depth model. Security is enforced at multiple independent layers - a failure in one layer does not compromise the system.
+
+```
+User Input
+    |
+    v
+[Prompt Guard]          - Detect injection, jailbreak, token smuggling
+    |
+    v
+[Security Mode]         - deny / sandbox / allowlist / ask / full
+    |
+    v
+[Tool Registry]         - Tier filtering, availability checks
+    |
+    v
+[Schema Validation]     - Zod parse, type enforcement
+    |
+    v
+[FsGuard / SsrfGuard]  - Path and URL validation per operation
+    |
+    v
+[Execution]             - Docker sandbox or local with policy
+    |
+    v
+[Audit Logger]          - Immutable event log
+```
+
+## Security Components
+
+<CardGroup cols={2}>
+  <Card title="Security Modes" icon="shield" href="/security/modes">
+    Five modes from `deny` (no tools) to `full` (unrestricted). Configured per channel, user, or globally.
+  </Card>
+  <Card title="Guards" icon="lock" href="/security/guards">
+    FsGuard (path traversal), SsrfGuard (network), PromptGuard (injection), AuditScanner.
+  </Card>
+  <Card title="Audit Logging" icon="scroll" href="/security/audit">
+    Immutable audit trail of all tool calls, approvals, and security events.
+  </Card>
+  <Card title="Device Pairing" icon="qrcode" href="/security/device-pairing">
+    QR code pairing and DM verification for unknown senders.
+  </Card>
+  <Card title="Plugin Sandbox" icon="cube" href="/security/plugins">
+    Permission model for plugins, code scanning, and trust management.
+  </Card>
+</CardGroup>
+
+## Risk Levels
+
+All security events are classified by risk level:
+
+| Level | Score | Meaning |
+|-------|-------|---------|
+| `LOW` | 0-24 | Normal operation |
+| `MEDIUM` | 25-49 | Worth noting, not blocked |
+| `HIGH` | 50-74 | Reviewed, may be blocked depending on mode |
+| `CRITICAL` | 75-100 | Blocked and alerted |
+
+## Default Security Configuration
+
+Out of the box, profClaw runs in `standard` mode:
+
+```yaml
+security:
+  mode: standard          # standard is safe for most deployments
+  fsGuard:
+    enabled: true
+    allowedPaths:
+      - "{{ workdir }}"   # project directory
+      - "{{ tmpdir }}"    # system temp
+  ssrfGuard:
+    enabled: true
+    allowedHosts: []      # no internal hosts allowed by default
+  promptGuard:
+    enabled: true
+    blockThreshold: 25    # block inputs scoring >= 25
+    warnThreshold: 10
+  auditLog:
+    enabled: true
+    retention: 90         # days
+```
+
+## Security Responsibilities
+
+| Layer | Your Responsibility | profClaw's Default |
+|-------|--------------------|--------------------|
+| Network | Set allowed external hosts | Block all private IPs |
+| Filesystem | Define allowed paths | Block secrets, system files |
+| Authentication | Configure your auth provider | Verify tokens per request |
+| Secrets | Store in env vars, not config | Never log or expose |
+| Models | Choose trusted providers | Validate responses |
+
+## Reporting Security Issues
+
+Found a vulnerability? Contact: security@profclaw.dev
+
+Please do not open public GitHub issues for security vulnerabilities.

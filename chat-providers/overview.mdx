@@ -1,0 +1,124 @@
+---
+title: "Chat Providers Overview"
+description: "profClaw connects to 27 chat channels. Deploy your AI agent across Slack, Discord, Telegram, WhatsApp, Teams, and more from a single install."
+---
+
+profClaw's chat provider system provides a unified abstraction across all messaging platforms. One agent, every channel.
+
+## Supported Channels
+
+| Provider | Type | Status | Key Capability |
+|----------|------|--------|----------------|
+| [WebChat](/chat-providers/webchat) | Built-in | Stable | Zero-setup browser widget |
+| [Slack](/chat-providers/slack) | Work | Stable | Socket Mode, Block Kit, slash commands |
+| [Discord](/chat-providers/discord) | Community | Stable | Slash commands, components |
+| [Telegram](/chat-providers/telegram) | Messaging | Stable | Webhooks, inline buttons |
+| [WhatsApp](/chat-providers/whatsapp) | Messaging | Stable | WhatsApp Business API |
+| [Matrix](/chat-providers/matrix) | Open Protocol | Stable | E2EE, federated |
+| [Microsoft Teams](/chat-providers/microsoft-teams) | Work | Stable | Adaptive Cards, Bot Framework |
+| [Rocket.Chat](/chat-providers/rocket-chat) | Self-hosted | Beta | Open-source Slack alternative |
+| [IRC](/chat-providers/irc) | Legacy | Beta | Classic IRC protocol |
+| [Signal](/chat-providers/signal) | Secure | Beta | E2EE, signald bridge |
+| [LINE](/chat-providers/line) | Asia | Beta | LINE Messaging API |
+| [Zalo](/chat-providers/zalo) | Vietnam | Beta | Zalo OA API |
+| [Viber](/chat-providers/viber) | Messaging | Beta | Viber Bot API |
+| [Facebook Messenger](/chat-providers/messenger) | Social | Beta | Meta Messenger Platform |
+| [WeChat](/chat-providers/wechat) | China | Beta | WeChat Official Account |
+| [Tlon/Urbit](/chat-providers/tlon) | Decentralized | Experimental | Urbit network |
+| [Custom](/chat-providers/custom) | DIY | Stable | Build your own provider |
+| Google Chat | Work | Beta | Google Workspace |
+| Mattermost | Self-hosted | Beta | Open-source Teams alternative |
+| DingTalk | China | Beta | Alibaba DingTalk |
+| WeCom | China | Beta | Tencent WeCom |
+| Feishu/Lark | Work | Beta | ByteDance enterprise |
+| QQ | Social | Beta | Tencent QQ |
+| Nostr | Decentralized | Experimental | Nostr protocol |
+| Twitch | Streaming | Beta | Twitch chat integration |
+| Nextcloud Talk | Self-hosted | Beta | Nextcloud messaging |
+| Synology Chat | Self-hosted | Beta | Synology NAS chat |
+
+## Capabilities Comparison
+
+| Feature | WebChat | Slack | Discord | Telegram | WhatsApp | Teams |
+|---------|---------|-------|---------|----------|---------|-------|
+| Direct Messages | Yes | Yes | Yes | Yes | Yes | Yes |
+| Group/Channel | No | Yes | Yes | Yes | No | Yes |
+| Slash Commands | No | Yes | Yes | No | No | Yes |
+| Buttons/Menus | No | Yes | Yes | Yes | Limited | Yes |
+| File Uploads | No | Yes | Yes | Yes | Yes | Yes |
+| Reactions | No | Yes | Yes | No | No | No |
+| Threads | No | Yes | Yes | No | No | Yes |
+| Rich Blocks | No | Yes | No | No | No | Yes |
+| E2E Encryption | No | No | No | No | Yes | No |
+| OAuth Install | No | Yes | Yes | No | No | Yes |
+
+## Multi-Account Support
+
+profClaw supports multiple accounts per provider:
+
+```yaml
+# settings.yml
+chat:
+  slack:
+    accounts:
+      - id: work
+        bot_token: xoxb-work-...
+        is_default: true
+      - id: community
+        bot_token: xoxb-community-...
+```
+
+## Architecture
+
+All providers implement the same interface:
+
+- **Inbound**: Receive messages via webhooks or polling
+- **Outbound**: Send messages and responses
+- **Status**: Health checks and connection monitoring
+- **Auth**: OAuth flows or manual token setup
+
+```
+User Message
+    |
+    v
+[Chat Provider]  ----incoming----> [Message Handler]
+                                         |
+                                    [AI Executor]
+                                         |
+[Chat Provider]  <---outbound-----  [Response]
+```
+
+## Webhook Setup
+
+Most providers require a public webhook URL. Use `profclaw serve` to start the server, then expose it:
+
+```bash
+# Development: use ngrok
+ngrok http 3000
+# Then use https://your-ngrok-id.ngrok.io as your webhook base URL
+
+# Production: configure your domain
+WEBHOOK_BASE_URL=https://profclaw.yourdomain.com
+```
+
+## Configuration Pattern
+
+All providers follow the same environment variable pattern:
+
+```bash
+# Enable a provider by setting its credentials
+SLACK_BOT_TOKEN=xoxb-...
+SLACK_SIGNING_SECRET=...
+
+DISCORD_BOT_TOKEN=...
+
+TELEGRAM_BOT_TOKEN=...
+```
+
+## Health Check
+
+```bash
+profclaw doctor --chat
+```
+
+This shows connection status for all configured chat providers.

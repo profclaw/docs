@@ -1,68 +1,311 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mint Starter Kit",
+  "theme": "quill",
+  "name": "profClaw Docs",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#FF4D4D",
+    "light": "#FF6B6B",
+    "dark": "#E63946",
+    "background": {
+      "dark": "#0B1120",
+      "light": "#FFFFFF"
+    }
   },
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Documentation",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Getting Started",
             "pages": [
               "index",
-              "quickstart",
-              "development"
+              "getting-started/installation",
+              "getting-started/onboard",
+              "getting-started/first-run",
+              "getting-started/deployment-modes"
             ]
           },
           {
-            "group": "Customization",
+            "group": "Configuration",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              "configuration/overview",
+              "configuration/environment-variables",
+              "configuration/settings-yml",
+              "configuration/security-config"
             ]
           },
           {
-            "group": "Writing content",
+            "group": "Chat Providers",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
+              "chat-providers/overview",
+              "chat-providers/webchat",
+              "chat-providers/slack",
+              "chat-providers/discord",
+              "chat-providers/telegram",
+              "chat-providers/whatsapp",
+              "chat-providers/matrix",
+              "chat-providers/microsoft-teams",
+              "chat-providers/rocket-chat",
+              "chat-providers/irc",
+              "chat-providers/signal",
+              "chat-providers/line",
+              "chat-providers/zalo",
+              "chat-providers/viber",
+              "chat-providers/messenger",
+              "chat-providers/wechat",
+              "chat-providers/tlon",
+              "chat-providers/custom"
             ]
           },
           {
-            "group": "AI tools",
+            "group": "AI Providers",
             "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "ai-providers/overview",
+              "ai-providers/anthropic",
+              "ai-providers/openai",
+              "ai-providers/google",
+              "ai-providers/ollama",
+              "ai-providers/groq",
+              "ai-providers/mistral",
+              "ai-providers/cohere",
+              "ai-providers/perplexity",
+              "ai-providers/together",
+              "ai-providers/fireworks",
+              "ai-providers/deepseek",
+              "ai-providers/xai",
+              "ai-providers/openrouter",
+              "ai-providers/cerebras",
+              "ai-providers/sambanova",
+              "ai-providers/lmstudio",
+              "ai-providers/azure-openai",
+              "ai-providers/amazon-bedrock"
+            ]
+          },
+          {
+            "group": "Tools",
+            "pages": [
+              "tools/overview",
+              "tools/file-operations",
+              "tools/git-operations",
+              "tools/web-fetch",
+              "tools/web-search",
+              "tools/browser-tools",
+              "tools/memory",
+              "tools/profclaw-ops",
+              "tools/sessions",
+              "tools/test-runner",
+              "tools/cron-tools",
+              "tools/code-analysis",
+              "tools/notifications",
+              "tools/custom-tools"
+            ]
+          },
+          {
+            "group": "Skills",
+            "pages": [
+              "skills/overview",
+              "skills/using-skills",
+              "skills/creating-skills",
+              "skills/clawhub",
+              "skills/built-in"
+            ]
+          },
+          {
+            "group": "Security",
+            "pages": [
+              "security/overview",
+              "security/modes",
+              "security/guards",
+              "security/audit",
+              "security/device-pairing",
+              "security/plugins"
+            ]
+          },
+          {
+            "group": "Integrations",
+            "pages": [
+              "integrations/overview",
+              "integrations/github",
+              "integrations/jira",
+              "integrations/linear",
+              "integrations/cloudflare",
+              "integrations/tailscale"
+            ]
+          },
+          {
+            "group": "Plugin Development",
+            "pages": [
+              "plugins/overview",
+              "plugins/sdk",
+              "plugins/packaging",
+              "plugins/publishing",
+              "plugins/examples"
+            ]
+          },
+          {
+            "group": "Architecture",
+            "pages": [
+              "architecture/overview",
+              "architecture/execution-engine",
+              "architecture/queue-system",
+              "architecture/memory",
+              "architecture/mcp",
+              "architecture/sync"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/slack-bot",
+              "guides/docker-deployment",
+              "guides/local-llm",
+              "guides/github-workflow",
+              "guides/multi-agent",
+              "guides/whatsapp-bot",
+              "guides/self-hosted",
+              "guides/backup-restore",
+              "guides/monitoring"
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "CLI Reference",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "CLI Overview",
             "pages": [
-              "api-reference/introduction"
+              "cli/overview"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Setup Commands",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "cli/init",
+              "cli/onboard",
+              "cli/doctor",
+              "cli/config",
+              "cli/auth"
+            ]
+          },
+          {
+            "group": "Core Commands",
+            "pages": [
+              "cli/chat",
+              "cli/serve",
+              "cli/daemon",
+              "cli/agent",
+              "cli/tui"
+            ]
+          },
+          {
+            "group": "Task Management",
+            "pages": [
+              "cli/task",
+              "cli/queue",
+              "cli/cron",
+              "cli/summary"
+            ]
+          },
+          {
+            "group": "Tool Commands",
+            "pages": [
+              "cli/tools",
+              "cli/skills",
+              "cli/mcp",
+              "cli/plugins"
+            ]
+          },
+          {
+            "group": "Integration Commands",
+            "pages": [
+              "cli/github",
+              "cli/jira",
+              "cli/linear",
+              "cli/sync"
+            ]
+          },
+          {
+            "group": "Security Commands",
+            "pages": [
+              "cli/security",
+              "cli/audit",
+              "cli/device"
+            ]
+          },
+          {
+            "group": "System Commands",
+            "pages": [
+              "cli/status",
+              "cli/cost",
+              "cli/memory",
+              "cli/backup",
+              "cli/update",
+              "cli/logs",
+              "cli/reset",
+              "cli/version"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "API Overview",
+            "pages": [
+              "api-reference/overview"
+            ]
+          },
+          {
+            "group": "Authentication",
+            "pages": [
+              "api-reference/auth"
+            ]
+          },
+          {
+            "group": "Chat",
+            "pages": [
+              "api-reference/chat",
+              "api-reference/chat-stream"
+            ]
+          },
+          {
+            "group": "Agents",
+            "pages": [
+              "api-reference/agents",
+              "api-reference/agent-sessions"
+            ]
+          },
+          {
+            "group": "Tasks",
+            "pages": [
+              "api-reference/tasks",
+              "api-reference/task-queue"
+            ]
+          },
+          {
+            "group": "Memory",
+            "pages": [
+              "api-reference/memory"
+            ]
+          },
+          {
+            "group": "Integrations",
+            "pages": [
+              "api-reference/integrations-api",
+              "api-reference/webhooks"
+            ]
+          },
+          {
+            "group": "System",
+            "pages": [
+              "api-reference/health",
+              "api-reference/devices",
+              "api-reference/security-api",
+              "api-reference/gateway"
             ]
           }
         ]
@@ -71,14 +314,14 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
+          "anchor": "GitHub",
+          "href": "https://github.com/profclaw",
+          "icon": "github"
         },
         {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+          "anchor": "Community",
+          "href": "https://discord.gg/profclaw",
+          "icon": "discord"
         }
       ]
     }
@@ -90,33 +333,55 @@
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "label": "Community",
+        "href": "https://discord.gg/profclaw"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "Get Started",
+      "href": "/getting-started/installation"
     }
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "claude",
+      "chatgpt",
+      "cursor",
+      "mcp"
+    ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "github": "https://github.com/profclaw",
+      "discord": "https://discord.gg/profclaw",
+      "x": "https://x.com/profclaw"
     }
+  },
+  "fonts": {
+    "headings": {
+      "family": "Manrope",
+      "weight": 700
+    },
+    "body": {
+      "family": "Manrope",
+      "weight": 400
+    }
+  },
+  "modeToggle": {
+    "default": "dark"
+  },
+  "seo": {
+    "indexHiddenPages": false
+  },
+  "feedback": {
+    "thumbsRating": true,
+    "suggestEdit": true,
+    "raiseIssue": true
+  },
+  "search": {
+    "prompt": "Search profClaw docs..."
   }
 }

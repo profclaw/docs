@@ -1,0 +1,136 @@
+---
+title: "Onboarding"
+description: "Walk through the interactive setup wizard"
+---
+
+## The Onboarding Wizard
+
+The `profclaw onboard` command launches an interactive wizard that configures your instance in 5 steps.
+
+```bash
+profclaw onboard
+```
+
+## Step 1: Environment Detection
+
+profClaw automatically detects your runtime environment:
+
+- **Docker** - Container-optimized settings, persistent volume paths
+- **VPS/Cloud** - Server-oriented defaults, systemd service setup
+- **Local Machine** - Developer-friendly settings, hot reload enabled
+- **Raspberry Pi / ARM** - Resource-constrained pico mode defaults
+
+## Step 2: Deployment Mode
+
+Choose your deployment mode based on available resources:
+
+<Tabs>
+  <Tab title="Pico">
+    **Best for**: IoT, edge devices, personal use on constrained hardware
+
+    - 512MB RAM, 1 CPU core
+    - Up to 3 AI providers
+    - 2 chat channels
+    - 15 tools
+    - In-memory queue only
+    - No Redis required
+  </Tab>
+  <Tab title="Mini (Default)">
+    **Best for**: Small teams, home servers, development
+
+    - 2GB RAM, 2 CPU cores
+    - Up to 15 AI providers
+    - 10 chat channels
+    - 50 tools
+    - In-memory queue with optional Redis
+    - Background job support
+  </Tab>
+  <Tab title="Pro">
+    **Best for**: Production, enterprise, multi-team
+
+    - 8GB+ RAM, 4+ CPU cores
+    - All 37 AI providers
+    - All 27 chat channels
+    - All 77+ tools
+    - Redis-backed BullMQ required
+    - Full audit logging, clustering support
+  </Tab>
+</Tabs>
+
+Set via environment variable:
+```bash
+export PROFCLAW_MODE=mini
+```
+
+## Step 3: AI Provider Setup
+
+Configure at least one AI provider. The wizard will prompt for API keys:
+
+```
+? Select your primary AI provider:
+  > Anthropic (Claude)
+    OpenAI (GPT-4o)
+    Google (Gemini)
+    Ollama (Local)
+    Other...
+
+? Enter your Anthropic API key: sk-ant-***
+? Test connection? Yes
+  ✓ Connected to Anthropic - Claude Sonnet 4.6 available
+```
+
+You can add more providers later with `profclaw config providers add`.
+
+## Step 4: Chat Channel (Optional)
+
+Connect a chat channel for conversational access:
+
+```
+? Set up a chat channel now?
+  > Webchat (built-in, no setup needed)
+    Slack
+    Discord
+    Telegram
+    Skip for now
+```
+
+Webchat is enabled by default at `http://localhost:3000`.
+
+## Step 5: Security Policy
+
+Choose your security posture:
+
+```
+? Select security mode:
+  > Standard (recommended)
+    Permissive (development only)
+    Strict (production/enterprise)
+```
+
+See [Security Modes](/security/modes) for detailed comparison.
+
+## Verify Setup
+
+After onboarding, verify everything works:
+
+```bash
+profclaw doctor
+```
+
+Expected output:
+```
+profClaw Doctor v2.x.x
+──────────────────────────
+✓ Node.js 22.x detected
+✓ Configuration valid
+✓ AI Provider: Anthropic connected
+✓ Chat: Webchat ready on :3000
+✓ Security: Standard mode active
+✓ Storage: SQLite initialized
+──────────────────────────
+All checks passed!
+```
+
+<Card title="Next: First Run" icon="arrow-right" href="/getting-started/first-run" horizontal>
+  Start profClaw and send your first message.
+</Card>

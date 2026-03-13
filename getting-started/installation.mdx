@@ -1,0 +1,107 @@
+---
+title: "Installation"
+description: "Install profClaw on macOS, Linux, Windows, or Docker"
+---
+
+## System Requirements
+
+| Requirement | Minimum | Recommended |
+|-------------|---------|-------------|
+| Node.js | 22+ | 22 LTS |
+| RAM | 512MB (pico) | 2GB+ (mini/pro) |
+| Disk | 500MB | 2GB+ |
+| Redis | Optional | Required for pro mode |
+
+## Install Methods
+
+<Tabs>
+  <Tab title="npm">
+    ```bash
+    npm install -g profclaw
+    ```
+
+    Verify the installation:
+    ```bash
+    profclaw version
+    ```
+  </Tab>
+  <Tab title="Homebrew (macOS)">
+    ```bash
+    brew tap profclaw/tap
+    brew install profclaw
+    ```
+  </Tab>
+  <Tab title="Docker">
+    ```bash
+    docker pull profclaw/profclaw:latest
+    ```
+
+    Run with default settings:
+    ```bash
+    docker run -d \
+      --name profclaw \
+      -p 3000:3000 \
+      -v profclaw-data:/data \
+      profclaw/profclaw:latest
+    ```
+
+    Or use Docker Compose:
+    ```yaml
+    services:
+      profclaw:
+        image: profclaw/profclaw:latest
+        ports:
+          - "3000:3000"
+        volumes:
+          - profclaw-data:/data
+        environment:
+          - PROFCLAW_MODE=mini
+          - PORT=3000
+    volumes:
+      profclaw-data:
+    ```
+  </Tab>
+  <Tab title="Docker (Pico)">
+    Optimized image for resource-constrained environments:
+    ```bash
+    docker pull profclaw/profclaw:pico
+    ```
+
+    ```bash
+    docker run -d \
+      --name profclaw \
+      -p 3000:3000 \
+      --memory=512m \
+      profclaw/profclaw:pico
+    ```
+  </Tab>
+  <Tab title="From Source">
+    ```bash
+    git clone https://github.com/profclaw/profclaw.git
+    cd profclaw
+    pnpm install
+    pnpm build
+    pnpm dev
+    ```
+  </Tab>
+</Tabs>
+
+## Post-Install Setup
+
+After installation, run the interactive setup wizard:
+
+```bash
+profclaw init
+profclaw onboard
+```
+
+This will:
+1. Create a `.profclaw/` configuration directory
+2. Detect your environment (Docker, VPS, local machine)
+3. Recommend a deployment mode (pico/mini/pro)
+4. Set up your first AI provider
+5. Configure optional chat channels
+
+<Card title="Next: Onboarding" icon="arrow-right" href="/getting-started/onboard" horizontal>
+  Walk through the interactive setup wizard step by step.
+</Card>

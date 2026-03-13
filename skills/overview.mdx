@@ -1,0 +1,125 @@
+---
+title: "Skills Overview"
+description: "Skills are instruction sets that specialize the AI for specific tasks. 50 built-in skills, plus community and custom skills."
+---
+
+## What Are Skills?
+
+A skill is a `SKILL.md` file that gives the AI a focused set of instructions, context, and behaviors for a particular task domain. When a skill is active, the AI's system prompt is extended with that skill's instructions - making it an expert in that specific area.
+
+Think of skills as pre-loaded expertise modules:
+
+- The `code-review` skill makes the AI a thorough code reviewer with a specific feedback format
+- The `git-workflow` skill teaches branching conventions and safe commit practices
+- The `web-research` skill instructs structured information gathering with citations
+
+Skills are **plain Markdown** with a YAML frontmatter header. No code required.
+
+## Skill Architecture
+
+```
+Skills Loading Order (lowest to highest priority):
+1. Extra directories (config.load.extraDirs)
+2. Bundled built-in skills (50 included)
+3. Managed skills (~/.profclaw/skills/)
+4. Workspace skills (<project>/skills/)
+```
+
+Later sources override earlier ones by skill name. Your workspace `skills/` directory always wins.
+
+## Skill File Format
+
+```markdown
+---
+name: code-review
+description: Analyze diffs, suggest improvements, and review PRs
+version: 1.0.0
+metadata: {"profclaw": {"emoji": "magnifying-glass", "category": "development", "priority": 85}}
+---
+
+# Code Review
+
+You are a thorough code reviewer...
+
+## What This Skill Does
+...
+```
+
+The YAML frontmatter defines the skill's identity. The Markdown body is injected as system instructions.
+
+## Key Frontmatter Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `name` | string | Unique skill identifier (kebab-case) |
+| `description` | string | Short description shown in the UI |
+| `version` | string | Semver version |
+| `user-invocable` | boolean | Show as a slash command |
+| `disable-model-invocation` | boolean | Prevent AI from auto-activating |
+| `command-dispatch` | `"tool"` | Route slash command directly to a tool |
+| `command-tool` | string | Tool name for command dispatch |
+| `command-arg-mode` | `"raw"` or `"parsed"` | How to pass args to the tool |
+| `metadata` | JSON string | Extended metadata (category, emoji, trigger patterns) |
+
+## How Skills Are Activated
+
+<Tabs>
+  <Tab title="Slash Commands">
+    User-invocable skills respond to `/skill-name` commands:
+
+    ```
+    /code-review
+    /git-workflow commit my changes
+    /web-research latest Hono docs
+    ```
+  </Tab>
+  <Tab title="AI Auto-Activation">
+    Skills with `triggerPatterns` in their metadata are auto-activated when the AI detects a matching intent:
+
+    - User says "review my code" → `code-review` skill activates
+    - User says "commit my changes" → `git-workflow` skill activates
+    - User says "search for..." → `web-research` skill activates
+  </Tab>
+  <Tab title="Preset Assignment">
+    Skills can be assigned to a preset (persona):
+
+    ```yaml
+    # settings.yml
+    presets:
+      code-assistant:
+        skills:
+          - code-review
+          - git-workflow
+          - debug-helper
+    ```
+  </Tab>
+</Tabs>
+
+## Skill Sources
+
+<CardGroup cols={2}>
+  <Card title="Built-in Skills" icon="box" href="/skills/built-in">
+    50 pre-installed skills covering development, productivity, and media.
+  </Card>
+  <Card title="ClawHub" icon="store" href="/skills/clawhub">
+    Community skill marketplace. Install with `profclaw skills install`.
+  </Card>
+  <Card title="Creating Skills" icon="pen" href="/skills/creating-skills">
+    Write your own SKILL.md files for custom behavior.
+  </Card>
+  <Card title="Using Skills" icon="play" href="/skills/using-skills">
+    How to invoke, manage, and configure skills.
+  </Card>
+</CardGroup>
+
+## Skills vs Tools vs Plugins
+
+| | Skills | Tools | Plugins |
+|-|--------|-------|---------|
+| **Format** | SKILL.md (Markdown) | TypeScript code | npm package |
+| **Purpose** | AI instructions and behavior | Executable functions | System extensions |
+| **Complexity** | Simple (text only) | Medium (typed functions) | Full (package) |
+| **Requires code** | No | Yes | Yes |
+| **Can call tools** | Yes (by instruction) | N/A | Yes |
+
+Skills are the easiest way to extend profClaw behavior without writing code.

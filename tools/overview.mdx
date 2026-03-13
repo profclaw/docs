@@ -1,0 +1,124 @@
+---
+title: "Tools Overview"
+description: "77+ built-in tools across filesystem, git, web, browser, memory, sessions, and more."
+---
+
+## What Are Tools?
+
+Tools are functions the AI agent can call during a conversation. When you ask profClaw to read a file, run tests, or search the web, the AI emits a structured tool call. The execution engine validates it against the security policy, runs it, and returns the result back to the model.
+
+profClaw ships 77+ built-in tools organized into **tiers** - essential tools work with any model, while advanced tools require frontier models to use reliably.
+
+## Tool Tiers
+
+<Tabs>
+  <Tab title="Essential (10 tools)">
+    Core tools that work reliably with any model, including small local models.
+
+    | Tool | Category | Description |
+    |------|----------|-------------|
+    | `read_file` | filesystem | Read file contents with optional line ranges |
+    | `write_file` | filesystem | Write or append to files |
+    | `edit_file` | filesystem | Surgical find-and-replace in files |
+    | `exec` | execution | Run shell commands |
+    | `grep` | filesystem | Regex search across file contents |
+    | `search_files` | filesystem | Find files by glob pattern |
+    | `directory_tree` | filesystem | Show project structure |
+    | `git_status` | git | Show working tree status |
+    | `web_fetch` | web | Fetch URL content |
+    | `complete_task` | profclaw | Mark a task as complete |
+  </Tab>
+  <Tab title="Standard (25 tools)">
+    Tools that need moderate reasoning ability - suitable for 14B+ models.
+
+    Includes all Essential tools plus: `git_diff`, `git_log`, `git_commit`, `git_branch`, `patch_apply`, `web_search`, `memory_search`, `memory_get`, `memory_stats`, `env`, `system_info`, `path_info`, `which`, `create_ticket`, `list_tickets`, `update_ticket`, `get_ticket`, `create_project`, `list_projects`, `test_run`, `image_analyze`, `link_understand`, `github_pr`, `notify`
+  </Tab>
+  <Tab title="Full (72 tools)">
+    All tools. Only sent to large frontier models (Claude, GPT-4o, Gemini 1.5+).
+
+    Includes Standard plus: browser automation (8), cron management (7), session spawning (4+), integrations (4), media generation (3), channel-specific actions (3), subagent orchestration, canvas rendering, maintenance.
+  </Tab>
+</Tabs>
+
+## Tool Categories
+
+<CardGroup cols={3}>
+  <Card title="Filesystem" icon="folder" href="/tools/file-operations">
+    Read, write, edit, search files and directories. Path-traversal safe with FsGuard.
+  </Card>
+  <Card title="Git" icon="code-branch" href="/tools/git-operations">
+    Status, diff, commit, branch, stash, push and pull operations.
+  </Card>
+  <Card title="Web" icon="globe" href="/tools/web-fetch">
+    Fetch URLs, call APIs, convert HTML to text. SSRF-protected.
+  </Card>
+  <Card title="Web Search" icon="magnifying-glass" href="/tools/web-search">
+    Search via Brave, Serper, SearXNG, or Tavily. Config-gated.
+  </Card>
+  <Card title="Browser" icon="browser" href="/tools/browser-tools">
+    Puppeteer-based automation: navigate, click, type, screenshot.
+  </Card>
+  <Card title="Memory" icon="brain" href="/tools/memory">
+    Hybrid vector + full-text search over MEMORY.md and chat history.
+  </Card>
+  <Card title="profClaw Ops" icon="ticket" href="/tools/profclaw-ops">
+    Create and manage tickets, projects directly from chat.
+  </Card>
+  <Card title="Sessions" icon="window" href="/tools/sessions">
+    Spawn, send to, and coordinate multi-agent sessions.
+  </Card>
+  <Card title="Test Runner" icon="flask" href="/tools/test-runner">
+    Auto-detect and run vitest, jest, pytest, go test, and more.
+  </Card>
+  <Card title="Cron" icon="clock" href="/tools/cron-tools">
+    Schedule HTTP webhooks, tool calls, or shell scripts.
+  </Card>
+  <Card title="Notifications" icon="bell" href="/tools/notifications">
+    System notifications, clipboard, screen capture.
+  </Card>
+  <Card title="Custom Tools" icon="wrench" href="/tools/custom-tools">
+    Register your own tools via plugins or the SDK.
+  </Card>
+</CardGroup>
+
+## How Tool Execution Works
+
+<Steps>
+  <Step title="Model emits a tool call">
+    The AI model outputs a structured JSON tool call with the tool name and parameters.
+  </Step>
+  <Step title="Schema validation">
+    Parameters are parsed through the tool's Zod schema. Invalid parameters return an error immediately without execution.
+  </Step>
+  <Step title="Security check">
+    The security policy is checked: mode, allowlist, approval requirements. Dangerous tools require explicit user approval in `ask` mode.
+  </Step>
+  <Step title="Execution">
+    The tool executor runs. Long-running tools can be backgrounded. Progress updates stream back to the conversation.
+  </Step>
+  <Step title="Result returned">
+    The tool result (success or error) is added to the conversation. The model continues reasoning with the new information.
+  </Step>
+</Steps>
+
+## Security Levels
+
+Each tool has a security level that determines behavior in different security modes:
+
+| Level | Description | Requires Approval |
+|-------|-------------|-------------------|
+| `safe` | Read-only, no side effects | Never |
+| `moderate` | Write operations, network requests | In `ask` mode |
+| `dangerous` | Shell exec, destructive operations | Always in `ask` mode |
+
+## Model-Aware Tool Routing
+
+profClaw automatically selects the right tool set based on which model is active. Small local models receive only Essential tools to avoid overwhelming their context. Frontier models receive the full 72-tool set.
+
+```
+Local model (Qwen 7B)    → Essential tier  (10 tools)
+Medium model (Mistral 14B) → Standard tier  (25 tools)
+Frontier (Claude, GPT-4o) → Full tier      (72 tools)
+```
+
+You can override this with `promote: ["browser_navigate"]` in your settings to force specific tools into smaller models.

@@ -1,0 +1,108 @@
+---
+title: "Plugin System Overview"
+description: "Extend profClaw with custom tools, search providers, and skills"
+---
+
+profClaw's plugin system lets you add new capabilities without forking the core. Plugins can provide AI tools (for function calling), search providers, skills (SKILL.md content), and chat channel integrations.
+
+## Plugin Categories
+
+```typescript
+// src/plugins/types.ts
+export type PluginCategory = 'search' | 'tool' | 'integration' | 'model';
+```
+
+| Category | What it adds |
+|----------|-------------|
+| `search` | A new web or knowledge search backend |
+| `tool` | New tools available to the AI during execution |
+| `integration` | External service connection (ticket systems, APIs) |
+| `model` | A custom AI model provider |
+
+## Architecture
+
+```
+Plugin Package (npm)
+    |
+    v
+pluginRegistry.register(id, factory)
+    |
+    v
+pluginRegistry.create(config)  --> PluginInstance (tool or searchProvider)
+    |
+    v
+Tool Router / Search Router use the plugin at runtime
+```
+
+The registry (`src/plugins/registry.ts`) holds factories keyed by plugin ID. Config is stored in the database and loaded on startup. Plugins run in an optional sandbox (`src/plugins/sandbox.ts`) for untrusted code.
+
+## Plugin Metadata
+
+Every plugin declares metadata:
+
+```typescript
+// src/plugins/types.ts
+export interface PluginMetadata {
+  id: string;
+  name: string;
+  description: string;
+  category: PluginCategory;
+  icon?: string;           // Lucide icon name
+  version: string;
+  author?: string;
+  homepage?: string;
+  pricing?: {
+    type: 'free' | 'paid' | 'freemium' | 'credit-based';
+    costPer1k?: number;
+    freeQuota?: number;
+  };
+  rateLimit?: {
+    requestsPerSecond?: number;
+    requestsPerMinute?: number;
+    requestsPerDay?: number;
+  };
+}
+```
+
+## Plugin Lifecycle
+
+1. **Install**: Package installed via `pnpm add` or downloaded from ClawHub
+2. **Register**: Factory registered with `pluginRegistry.register()`
+3. **Configure**: User provides credentials via settings UI (generated from `PluginSettingsSchema`)
+4. **Load**: `onLoad(config)` lifecycle hook called
+5. **Execute**: Tools or search called at runtime
+6. **Health check**: `healthCheck()` polled by the dashboard
+7. **Unload**: `onUnload()` called on server shutdown or plugin disable
+
+## Settings Schema
+
+Plugins declare their settings schema for automatic UI generation:
+
+```typescript
+export interface PluginSettingsSchema {
+  credentials: SettingsField[];
+  settings: SettingsField[];
+}
+
+export interface SettingsField {
+  key: string;
+  type: 'text' | 'password' | 'number' | 'boolean' | 'select' | 'url';
+  label: string;
+  description?: string;
+  required?: boolean;
+  default?: unknown;
+  options?: Array<{ value: string; label: string }>;
+}
+```
+
+## ClawHub
+
+ClawHub is profClaw's plugin marketplace. Browse and install plugins from the UI at **Settings > Plugins > Browse ClawHub**, or via the CLI:
+
+```bash
+profclaw plugins install @profclaw/plugin-jira-search
+profclaw plugins list
+profclaw plugins disable my-plugin
+```
+
+See [Publishing to ClawHub](/plugins/publishing) for details on submitting your own plugin.

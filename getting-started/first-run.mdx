@@ -1,0 +1,112 @@
+---
+title: "First Run"
+description: "Start profClaw and interact with your first AI agent"
+---
+
+## Start the Server
+
+<Tabs>
+  <Tab title="Development">
+    ```bash
+    profclaw serve
+    ```
+    Starts the HTTP server with hot reload on `http://localhost:3000`.
+  </Tab>
+  <Tab title="Daemon">
+    ```bash
+    profclaw daemon start
+    ```
+    Runs profClaw as a background service.
+  </Tab>
+  <Tab title="Docker">
+    ```bash
+    docker start profclaw
+    ```
+  </Tab>
+</Tabs>
+
+## Access the Web UI
+
+Open `http://localhost:3000` in your browser. You will see the profClaw web chat interface.
+
+## Send Your First Message
+
+Type a message in the chat input:
+
+```
+You: What can you help me with?
+```
+
+profClaw will respond with its capabilities based on your configured tools and providers.
+
+## Try the CLI Chat
+
+You can also interact directly from your terminal:
+
+```bash
+profclaw chat
+```
+
+This opens an interactive terminal session:
+
+```
+profClaw v2.x.x - Interactive Chat
+Type /help for commands, /exit to quit
+──────────────────────────────────────
+
+You: Summarize the README.md in this directory
+
+Agent: I'll read the README.md file and summarize it for you.
+
+[Tool: read_file] Reading README.md...
+
+Here's a summary of the README:
+...
+```
+
+## Try the TUI
+
+For a richer terminal experience with panels and syntax highlighting:
+
+```bash
+profclaw tui
+```
+
+## Use Tools
+
+profClaw agents have access to tools. Try asking it to:
+
+```
+You: List the files in the current directory
+You: Search for TODO comments in my codebase
+You: Create a new file called hello.txt with "Hello World"
+You: Run my test suite
+```
+
+Tools are subject to your [security policy](/security/modes). In standard mode, destructive operations require approval.
+
+## Use Skills
+
+Skills are pre-built capabilities invoked with slash commands:
+
+```
+You: /commit
+You: /review-pr 42
+You: /summarize src/
+```
+
+See [all 50 built-in skills](/skills/built-in).
+
+## API Access
+
+Send messages programmatically via the REST API:
+
+```bash
+curl -X POST http://localhost:3000/api/chat/message \
+  -H "Content-Type: application/json" \
+  -d '{"message": "Hello profClaw", "provider": "anthropic"}'
+```
+
+<Card title="Next: Deployment Modes" icon="arrow-right" href="/getting-started/deployment-modes" horizontal>
+  Understand pico, mini, and pro modes in detail.
+</Card>

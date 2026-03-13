@@ -1,0 +1,159 @@
+---
+title: "Docker Deployment"
+description: "Production-ready Docker setup with Redis and persistent storage"
+---
+
+## Overview
+
+Deploy profClaw in Docker for production use with persistent storage, Redis for job queues, and optional Nginx reverse proxy.
+
+## Quick Start
+
+```bash
+docker run -d \
+  --name profclaw \
+  -p 3000:3000 \
+  -v profclaw-data:/data \
+  -e PROFCLAW_MODE=mini \
+  -e ANTHROPIC_API_KEY=sk-ant-your-key \
+  profclaw/profclaw:latest
+```
+
+## Docker Compose (Recommended)
+
+Create a `docker-compose.yml`:
+
+```yaml
+services:
+  profclaw:
+    image: profclaw/profclaw:latest
+    container_name: profclaw
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - profclaw-data:/data
+      - ./settings.yml:/app/.profclaw/settings.yml:ro
+    environment:
+      - PROFCLAW_MODE=pro
+      - REDIS_URL=redis://redis:6379
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - SECURITY_MODE=standard
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  redis:
+    image: redis:7-alpine
+    container_name: profclaw-redis
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  profclaw-data:
+  redis-data:
+```
+
+Start the stack:
+```bash
+docker compose up -d
+```
+
+## Pico Mode (Resource-Constrained)
+
+For devices with limited resources:
+
+```yaml
+services:
+  profclaw:
+    image: profclaw/profclaw:pico
+    container_name: profclaw
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "1.0"
+    environment:
+      - PROFCLAW_MODE=pico
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+```
+
+## With Nginx Reverse Proxy
+
+Add Nginx for TLS termination:
+
+```yaml
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./certs:/etc/nginx/certs:ro
+    depends_on:
+      - profclaw
+
+  profclaw:
+    image: profclaw/profclaw:latest
+    expose:
+      - "3000"
+    # ... rest of config
+```
+
+Example `nginx.conf`:
+```nginx
+server {
+    listen 443 ssl;
+    server_name profclaw.example.com;
+
+    ssl_certificate /etc/nginx/certs/cert.pem;
+    ssl_certificate_key /etc/nginx/certs/key.pem;
+
+    location / {
+        proxy_pass http://profclaw:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+```
+
+## Health Checks
+
+```bash
+# Check profClaw health
+curl http://localhost:3000/api/health
+
+# Docker health status
+docker inspect --format='{{.State.Health.Status}}' profclaw
+```
+
+## Backup
+
+Backup your data volume:
+```bash
+docker run --rm \
+  -v profclaw-data:/data \
+  -v $(pwd)/backups:/backup \
+  alpine tar czf /backup/profclaw-$(date +%Y%m%d).tar.gz /data
+```
+
+## Updating
+
+```bash
+docker compose pull
+docker compose up -d
+```
