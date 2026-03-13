@@ -5,11 +5,7 @@
   "colors": {
     "primary": "#f43f5e",
     "light": "#fb7185",
-    "dark": "#e11d48",
-    "background": {
-      "dark": "#050810",
-      "light": "#fafbff"
-    }
+    "dark": "#e11d48"
   },
   "favicon": "/favicon.svg",
   "css": "/custom.css",
@@ -379,19 +375,25 @@
       "x": "https://x.com/profclaw"
     }
   },
+  "background": {
+    "decoration": "gradient",
+    "color": {
+      "light": "#fafbff",
+      "dark": "#050810"
+    }
+  },
   "fonts": {
-    "headings": {
+    "heading": {
       "family": "Plus Jakarta Sans",
       "weight": 800
     },
     "body": {
       "family": "Manrope",
       "weight": 400
-    },
-    "code": {
-      "family": "JetBrains Mono",
-      "weight": 400
     }
+  },
+  "appearance": {
+    "default": "dark"
   },
   "seo": {
     "indexHiddenPages": false
