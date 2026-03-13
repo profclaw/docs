@@ -184,10 +184,12 @@
             "group": "Setup Commands",
             "pages": [
               "cli/init",
+              "cli/setup",
               "cli/onboard",
               "cli/doctor",
               "cli/config",
-              "cli/auth"
+              "cli/auth",
+              "cli/completion"
             ]
           },
           {
@@ -197,16 +199,27 @@
               "cli/serve",
               "cli/daemon",
               "cli/agent",
-              "cli/tui"
+              "cli/tui",
+              "cli/session",
+              "cli/canvas"
             ]
           },
           {
             "group": "Task Management",
             "pages": [
               "cli/task",
+              "cli/ticket",
               "cli/queue",
               "cli/cron",
               "cli/summary"
+            ]
+          },
+          {
+            "group": "Provider Commands",
+            "pages": [
+              "cli/provider",
+              "cli/models",
+              "cli/channels"
             ]
           },
           {
@@ -215,7 +228,8 @@
               "cli/tools",
               "cli/skills",
               "cli/mcp",
-              "cli/plugins"
+              "cli/plugins",
+              "cli/browser"
             ]
           },
           {
@@ -224,7 +238,9 @@
               "cli/github",
               "cli/jira",
               "cli/linear",
-              "cli/sync"
+              "cli/sync",
+              "cli/webhooks",
+              "cli/tunnel"
             ]
           },
           {
@@ -245,7 +261,8 @@
               "cli/update",
               "cli/logs",
               "cli/reset",
-              "cli/version"
+              "cli/version",
+              "cli/nodes"
             ]
           }
         ]
