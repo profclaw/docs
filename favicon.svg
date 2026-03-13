@@ -1,5 +1,52 @@
-<svg width="502" height="502" viewBox="0 0 502 502" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M501.402 185.33V29.9622C501.402 13.2897 487.876 0 471.453 0H316.156C291.763 0 267.611 4.83243 245.15 14.0144C222.689 23.438 202.16 36.9695 185.012 54.3668L183.804 55.575C161.101 78.5299 144.92 107.042 136.708 138.454C151.441 134.588 166.656 132.655 181.871 132.413C222.447 131.93 262.298 144.978 294.661 169.383C323.885 191.13 346.104 221.092 358.18 255.645C370.739 290.681 372.188 328.859 362.769 364.862C393.925 356.647 422.666 340.457 445.611 317.744L446.818 316.536C463.966 299.38 477.732 278.841 487.151 256.37C496.571 233.898 501.16 209.735 501.16 185.33H501.402Z" fill="#18E299"/>
-<path d="M132.071 182.706C132.312 135.044 151.32 89.3068 184.764 55.1246L55.5569 184.391C55.0756 184.873 54.5942 185.113 54.113 185.595C22.5932 216.888 3.58552 258.774 0.457596 303.066C-2.42971 344.47 8.39746 385.392 31.4959 419.575C33.6992 422.835 39.6774 423.907 43.0459 420.778L122.206 341.822C146.989 317.028 154.689 280.198 142.899 247.219C135.44 226.758 131.831 204.852 132.071 182.706Z" fill="#0C8C5E"/>
-<path d="M446.067 316.547C421.284 340.86 390.245 357.71 356.56 365.172C322.634 372.635 287.506 370.468 254.783 358.914C254.783 358.914 254.542 358.914 254.301 358.914C221.338 347.118 184.525 354.821 159.742 379.375L80.5808 458.331C77.2123 461.701 77.6935 467.238 81.7838 469.885C115.95 492.754 156.855 503.827 198.24 500.938C242.512 497.809 284.137 478.792 315.656 447.258L316.859 446.054L446.067 316.788V316.547Z" fill="#0C8C5E"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fb7185"/>
+      <stop offset="100%" stop-color="#e11d48"/>
+    </linearGradient>
+    <radialGradient id="shine" cx="35%" cy="25%" r="50%">
+      <stop offset="0%" stop-color="#fff" stop-opacity=".15"/>
+      <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a1828"/>
+      <stop offset="100%" stop-color="#1a0e1a"/>
+    </linearGradient>
+    <radialGradient id="belly" cx="42%" cy="38%" r="45%">
+      <stop offset="0%" stop-color="#f43f5e" stop-opacity=".08"/>
+      <stop offset="100%" stop-color="#f43f5e" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Coral gradient bg -->
+  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+  <rect width="128" height="128" rx="28" fill="url(#shine)"/>
+  <rect x="1" y="1" width="126" height="126" rx="27" fill="none" stroke="#fff" stroke-opacity=".1"/>
+  <!-- Dark shadow body - contrasts against coral -->
+  <ellipse cx="64" cy="72" rx="33" ry="31" fill="url(#body)"/>
+  <ellipse cx="64" cy="72" rx="33" ry="31" fill="url(#belly)"/>
+  <ellipse cx="64" cy="72" rx="32.5" ry="30.5" fill="none" stroke="#fff" stroke-opacity=".06"/>
+  <!-- Legs -->
+  <rect x="52" y="100" width="9" height="12" rx="4.5" fill="#1a0e1a"/>
+  <rect x="67" y="100" width="9" height="12" rx="4.5" fill="#1a0e1a"/>
+  <!-- Claws -->
+  <ellipse cx="25" cy="72" rx="9" ry="7" fill="#201420"/>
+  <path d="M20,66 L25,72 L30,66" stroke="#fb7185" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".3"/>
+  <ellipse cx="103" cy="72" rx="9" ry="7" fill="#201420"/>
+  <path d="M98,66 L103,72 L108,66" stroke="#fb7185" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".3"/>
+  <!-- Antennae -->
+  <line x1="50" y1="43" x2="42" y2="26" stroke="#1a0e1a" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="41" cy="24" r="3.5" fill="#fda4af" opacity=".7"/>
+  <circle cx="41" cy="24" r="1.5" fill="#fff" opacity=".5"/>
+  <line x1="78" y1="43" x2="86" y2="26" stroke="#1a0e1a" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="87" cy="24" r="3.5" fill="#fda4af" opacity=".7"/>
+  <circle cx="87" cy="24" r="1.5" fill="#fff" opacity=".5"/>
+  <!-- Eyes -->
+  <circle cx="52" cy="67" r="10.5" fill="#fff"/>
+  <circle cx="76" cy="67" r="10.5" fill="#fff"/>
+  <circle cx="54" cy="66" r="5.8" fill="#4c0519"/>
+  <circle cx="78" cy="66" r="5.8" fill="#4c0519"/>
+  <circle cx="56.5" cy="64" r="2.5" fill="#fff"/>
+  <circle cx="80.5" cy="64" r="2.5" fill="#fff"/>
+  <circle cx="52" cy="69" r="1.2" fill="#fff" opacity=".35"/>
+  <circle cx="76" cy="69" r="1.2" fill="#fff" opacity=".35"/>
 </svg>

@@ -1,0 +1,77 @@
+/* profClaw Docs - Brand Overrides
+   Maps profClaw design tokens onto Mintlify's theme system */
+
+/* Dark mode palette (default) */
+:root {
+  --background-dark: #050810;
+  --background-light: #fafbff;
+}
+
+/* Code blocks - match profclaw terminal style */
+[data-theme="dark"] pre {
+  background: rgba(10, 15, 26, 0.85) !important;
+  border: 1px solid rgba(136, 146, 176, 0.12);
+  border-radius: 14px;
+}
+
+[data-theme="dark"] pre code {
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+}
+
+/* Selection color */
+::selection {
+  background: #fb7185;
+  color: #fff;
+}
+
+/* Accent link hover glow */
+a:hover {
+  text-decoration-color: #fb7185;
+}
+
+/* Card hover accent border */
+[data-theme="dark"] .group-card:hover,
+[data-theme="dark"] [class*="Card"]:hover {
+  border-color: rgba(244, 63, 94, 0.3);
+}
+
+/* Sidebar active item */
+[data-theme="dark"] [aria-current="page"] {
+  color: #fb7185;
+}
+
+/* Table header styling */
+th {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Inline code styling */
+:not(pre) > code {
+  border-radius: 6px;
+  font-size: 0.875em;
+}
+
+[data-theme="dark"] :not(pre) > code {
+  background: rgba(10, 15, 26, 0.85);
+  border: 1px solid rgba(136, 146, 176, 0.12);
+  color: #fb7185;
+}
+
+[data-theme="light"] :not(pre) > code {
+  background: #f1f5f9;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  color: #e11d48;
+}
+
+/* Badge/tag styling */
+[data-theme="dark"] .badge {
+  background: linear-gradient(135deg, rgba(251, 113, 133, 0.2), rgba(225, 29, 72, 0.15));
+  color: #fb7185;
+}
+
+/* Heading letter spacing - match site */
+h1, h2, h3 {
+  letter-spacing: -0.02em;
+}

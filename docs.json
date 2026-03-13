@@ -3,15 +3,16 @@
   "theme": "quill",
   "name": "profClaw Docs",
   "colors": {
-    "primary": "#FF4D4D",
-    "light": "#FF6B6B",
-    "dark": "#E63946",
+    "primary": "#f43f5e",
+    "light": "#fb7185",
+    "dark": "#e11d48",
     "background": {
-      "dark": "#0B1120",
-      "light": "#FFFFFF"
+      "dark": "#050810",
+      "light": "#fafbff"
     }
   },
   "favicon": "/favicon.svg",
+  "css": "/custom.css",
   "navigation": {
     "tabs": [
       {
@@ -345,7 +346,8 @@
   },
   "logo": {
     "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "dark": "/logo/dark.svg",
+    "href": "https://profclaw.dev"
   },
   "navbar": {
     "links": [
@@ -379,17 +381,22 @@
   },
   "fonts": {
     "headings": {
-      "family": "Manrope",
-      "weight": 700
+      "family": "Plus Jakarta Sans",
+      "weight": 800
     },
     "body": {
       "family": "Manrope",
       "weight": 400
+    },
+    "code": {
+      "family": "JetBrains Mono",
+      "weight": 400
     }
   },
-  "modeToggle": {
+  "appearance": {
     "default": "dark"
   },
+  "rounded": "default",
   "seo": {
     "indexHiddenPages": false
   },
